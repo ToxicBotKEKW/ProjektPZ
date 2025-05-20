@@ -1,0 +1,80 @@
+﻿@model Projekt_Lab_11___12.Models.ViewModels.EquipmentViewModel
+
+@{
+    ViewData["Title"] = "Store";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/equipment-site.css" />
+}
+
+@Html.AntiForgeryToken()
+
+<div class="mine-container">
+    <div class="navbar">
+        <a asp-controller="Mine" asp-action="IronMine" class="navbar-link">
+            <img src="~/img/iron-mine.png" />
+        </a>
+        <a asp-controller="Mine" asp-action="GoldMine" class="navbar-link">
+            <img src="~/img/gold-mine.png" />
+        </a>
+        <a asp-controller="Mine" asp-action="DiamondMine" class="navbar-link">
+            <img src="~/img/diamond-mine.png" />
+        </a>
+        <a asp-controller="Store" asp-action="Index" class="navbar-link">
+            <img src="~/img/store.png" />
+        </a>
+        <a asp-controller="Equipment" asp-action="Index" class="navbar-link">
+            <img src="~/img/pickaxe/pickaxe-0.png" />
+        </a>
+        <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="navbar-link">
+            <button type="submit">
+                <img src="~/img/logout.png" alt="Logout" />
+            </button>
+        </form>
+    </div>
+
+    <div class="content">
+        <div class="player-info">
+            <div class="resources">
+                @if (Model != null)
+                {
+                    <span id="iron-count">@Model.Iron.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/iron.png" />
+                    <span id="gold-count">@Model.Gold.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/gold.png" />
+                    <span id="diamond-count">@Model.Diamond.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/diamond.png" />
+                }
+            </div>
+        </div>
+
+        <div class="store-list">
+            @foreach (var item in Model.PickaxesEq)
+            {
+                <div class="pickaxe-card">
+                    <h2>@item.Name</h2>
+                    <img src="~/img/pickaxe/@item.ImageName" alt="@item.Name" class="pickaxe-image" />
+                    <p><strong>Wymagany poziom:</strong> @item.RequirmentLevel</p>
+
+                    <div class="resource-multiplier">
+                        <h4>Mnożnik zasobów:</h4>
+                        <ul>
+                            @foreach (var multiplier in item.PickaxeResourceMultipliers)
+                            {
+                                <li>@multiplier.ResourceType: @multiplier.Value %</li>
+                            }
+                        </ul>
+                    </div>
+
+                    <form asp-controller="Equipment" asp-action="Equip" method="post" style="display:inline;">
+                        <input type="hidden" name="pickaxeId" value="@item.Id" />
+                        <button type="submit" class="buy-button" @(item.Id == Model.UsedPickaxeId ? "disabled" : "enable")>
+                            Wyposaż
+                        </button>
+                    </form>
+
+
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
