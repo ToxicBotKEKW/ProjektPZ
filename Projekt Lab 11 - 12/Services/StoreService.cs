@@ -23,7 +23,7 @@ namespace Projekt_Lab_11___12.Services
             _userManager = userManager;
         }
 
-        public async Task<StoreViewModel> StoreViewModel(int page = 1, int pageSize = 1, string searchQuery = "", string sortOrder = "")
+        public async Task<StoreViewModel> StoreViewModel(int page = 1, int pageSize = 3, string searchQuery = "", string sortOrder = "")
         {
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
             if (user == null) return null;
