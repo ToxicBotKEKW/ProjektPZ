@@ -188,6 +188,9 @@ namespace Projekt_Lab_11___12.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
+                    b.Property<int>("MineResourceType")
+                        .HasColumnType("int");
+
                     b.Property<int>("ResourceType")
                         .HasColumnType("int");
 
@@ -213,6 +216,9 @@ namespace Projekt_Lab_11___12.Migrations
                         .HasColumnType("nvarchar(13)");
 
                     b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MineResourceType")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")

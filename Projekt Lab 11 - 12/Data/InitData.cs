@@ -318,12 +318,46 @@ namespace Projekt_Lab_11___12.Data
 
             context.PointForClicks.Add(new PointForClick { Level = 1, ResourceType = ResourceType.Iron, Amount = 1 });
             context.PointForClicks.Add(new PointForClick { Level = 2, ResourceType = ResourceType.Iron, Amount = 2 });
+            context.PointForClicks.Add(new PointForClick { Level = 3, ResourceType = ResourceType.Iron, Amount = 3 });
+            context.PointForClicks.Add(new PointForClick { Level = 4, ResourceType = ResourceType.Iron, Amount = 4 });
+            context.PointForClicks.Add(new PointForClick { Level = 5, ResourceType = ResourceType.Iron, Amount = 5 });
 
             context.PointForClicks.Add(new PointForClick { Level = 1, ResourceType = ResourceType.Gold, Amount = 0.1 });
             context.PointForClicks.Add(new PointForClick { Level = 2, ResourceType = ResourceType.Gold, Amount = 0.2 });
+            context.PointForClicks.Add(new PointForClick { Level = 3, ResourceType = ResourceType.Gold, Amount = 0.3 });
+            context.PointForClicks.Add(new PointForClick { Level = 4, ResourceType = ResourceType.Gold, Amount = 0.4 });
+            context.PointForClicks.Add(new PointForClick { Level = 5, ResourceType = ResourceType.Gold, Amount = 0.5 });
 
             context.PointForClicks.Add(new PointForClick { Level = 1, ResourceType = ResourceType.Diamond, Amount = 0.01 });
             context.PointForClicks.Add(new PointForClick { Level = 2, ResourceType = ResourceType.Diamond, Amount = 0.02 });
+            context.PointForClicks.Add(new PointForClick { Level = 3, ResourceType = ResourceType.Diamond, Amount = 0.03 });
+            context.PointForClicks.Add(new PointForClick { Level = 4, ResourceType = ResourceType.Diamond, Amount = 0.04 });
+            context.PointForClicks.Add(new PointForClick { Level = 5, ResourceType = ResourceType.Diamond, Amount = 0.05 });
+
+
+            var levelRequirements = new List<LevelRequirement>();
+
+            var resourceTypes = new[] { ResourceType.Iron, ResourceType.Gold, ResourceType.Diamond };
+
+            foreach (var mineResource in resourceTypes)
+            {
+                for (int level = 2; level <= 5; level++)
+                {
+                    foreach (var costResource in resourceTypes)
+                    {
+                        levelRequirements.Add(new LevelRequirement
+                        {
+                            Level = level,
+                            MineResourceType = mineResource,
+                            ResourceType = costResource,
+                            Amount = Math.Round(level * 10 * (costResource == mineResource ? 1.5 : 1.0), 2)
+                        });
+                    }
+                }
+            }
+
+            context.LevelRequirements.AddRange(levelRequirements);
+
 
 
             context.SaveChanges();

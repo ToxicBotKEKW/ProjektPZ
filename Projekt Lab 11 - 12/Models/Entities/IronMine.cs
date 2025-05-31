@@ -3,7 +3,8 @@
     public class IronMine : Mine
     {
         public IronMine() { 
-            Name = "Kopalnia Żelaza"; 
+            Name = "Kopalnia Żelaza";
+            MineResourceType = ResourceType.Iron;
         }
     }
 }

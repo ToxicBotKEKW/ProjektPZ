@@ -1,0 +1,185 @@
+﻿@model Projekt_Lab_11___12.Models.ViewModels.UpgradeViewModel
+
+@{
+    ViewData["Title"] = "Store";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/upgrade-site.css" />
+}
+
+@Html.AntiForgeryToken()
+
+<div class="mine-container">
+    <div class="navbar">
+        <a asp-controller="Mine" asp-action="IronMine" class="navbar-link">
+            <img src="~/img/iron-mine.png" />
+        </a>
+        <a asp-controller="Mine" asp-action="GoldMine" class="navbar-link">
+            <img src="~/img/gold-mine.png" />
+        </a>
+        <a asp-controller="Mine" asp-action="DiamondMine" class="navbar-link">
+            <img src="~/img/diamond-mine.png" />
+        </a>
+        <a asp-controller="Store" asp-action="Index" class="navbar-link">
+            <img src="~/img/store.png" />
+        </a>
+        <a asp-controller="Equipment" asp-action="Index" class="navbar-link">
+            <img src="~/img/pickaxe/pickaxe-0.png" />
+        </a>
+        <a asp-controller="Upgrade" asp-action="Index" class="navbar-link">
+            <img src="~/img/upgrade.png" />
+        </a>
+        <a asp-controller="Ranking" asp-action="Index" class="navbar-link">
+            <img src="~/img/ranking.png" />
+        </a>
+        <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="navbar-link">
+            <button type="submit">
+                <img src="~/img/logout.png" alt="Logout" />
+            </button>
+        </form>
+    </div>
+
+    <div class="content">
+        <div class="player-info">
+            <div class="resources">
+                @if (Model != null)
+                {
+                    <span id="iron-count">@Model.Iron.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/iron.png" />
+                    <span id="gold-count">@Model.Gold.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/gold.png" />
+                    <span id="diamond-count">@Model.Diamond.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/diamond.png" />
+                }
+            </div>
+        </div>
+
+        <div class="upgrade-mine">
+            <div class="upgrade-card">
+                <h2></h2>
+                <img src="~/img/iron-mine-2.png" alt="Iron Mine" class="mine-image" />
+                <h1>@Model.IronMine.Name</h1>
+
+                <div class="resource-multiplier">
+                    <h4>Poziom: @Model.IronMine.Level</h4>
+                </div>
+
+                <div class="resource-multiplier">
+                    <h4>Zasoby za kliknięcie: @Model.IronMinePointForClick.Amount</h4>
+                </div>
+
+                <div class="resource-costs">
+                    @if(Model.IronMineLevelRequirments != null && Model.IronMineLevelRequirments.Any()){
+                    <h4>Koszt ulepszenia:</h4>
+                    <ul>
+                        @foreach (var cost in Model.IronMineLevelRequirments)
+                        {
+                            <li>@cost.ResourceType: @cost.Amount</li>
+                        }
+                        </ul>
+                    }
+                    else
+                    {
+                        <h4>Masz maksymalny poziom</h4>
+                    }
+                </div>
+
+                <form asp-controller="Upgrade" asp-action="Upgrade" method="post" style="display:inline;">
+                    <input type="hidden" name="upgradeMineId" value="@Model.IronMine.Id" />
+                    <button type="submit" class="Upgrade-button" @(Model.IronMineLevelRequirments == null || !Model.IronMineLevelRequirments.Any() ? "disabled" : "")>Ulepsz</button>
+                </form>
+
+                @if (Model.PurchaseErrors.ContainsKey(Model.IronMine.Id))
+                {
+                    <div class="alert alert-danger" style="margin-top: 10px;">
+                        @Model.PurchaseErrors[Model.IronMine.Id]
+                    </div>
+                }
+
+            </div>
+            <div class="upgrade-card">
+                <h2></h2>
+                <img src="~/img/gold-mine-2.png" alt="Gold Mine" class="mine-image" />
+                <h1>@Model.GoldMine.Name</h1>
+
+                <div class="resource-multiplier">
+                    <h4>Poziom: @Model.GoldMine.Level</h4>
+                </div>
+
+                <div class="resource-multiplier">
+                    <h4>Zasoby za kliknięcie: @Model.GoldMinePointForClick.Amount</h4>
+                </div>
+
+                <div class="resource-costs">
+                    @if(Model.GoldMineLevelRequirments != null && Model.GoldMineLevelRequirments.Any()){
+                    <h4>Koszt ulepszenia:</h4>
+                    <ul>
+                        @foreach (var cost in Model.GoldMineLevelRequirments)
+                        {
+                            <li>@cost.ResourceType: @cost.Amount</li>
+                        }
+                        </ul>
+                    }
+                    else
+                    {
+                        <h4>Masz maksymalny poziom</h4>
+                    }
+                </div>
+
+                <form asp-controller="Upgrade" asp-action="Upgrade" method="post" style="display:inline;">
+                    <input type="hidden" name="upgradeMineId" value="@Model.GoldMine.Id" />
+                    <button type="submit" class="Upgrade-button" @(Model.GoldMineLevelRequirments == null || !Model.GoldMineLevelRequirments.Any() ? "disabled" : "")>Ulepsz</button>
+                </form>
+
+                @if (Model.PurchaseErrors.ContainsKey(Model.GoldMine.Id))
+                {
+                    <div class="alert alert-danger" style="margin-top: 10px;">
+                        @Model.PurchaseErrors[Model.GoldMine.Id]
+                    </div>
+                }
+
+            </div>
+            <div class="upgrade-card">
+                <h2></h2>
+                <img src="~/img/diamond-mine-2.png" alt="Diamond Mine" class="mine-image" />
+                <h1>@Model.DiamondMine.Name</h1>
+
+                <div class="resource-multiplier">
+                    <h4>Poziom: @Model.DiamondMine.Level</h4>
+                </div>
+
+                <div class="resource-multiplier">
+                    <h4>Zasoby za kliknięcie: @Model.DiamondMinePointForClick.Amount</h4>
+                </div>
+
+                <div class="resource-costs">
+                    @if(Model.DiamondMineLevelRequirments != null && Model.DiamondMineLevelRequirments.Any()){
+                    <h4>Koszt ulepszenia:</h4>
+                    <ul>
+                        @foreach (var cost in Model.DiamondMineLevelRequirments)
+                        {
+                            <li>@cost.ResourceType: @cost.Amount</li>
+                        }
+                        </ul>
+                    }
+                    else
+                    {
+                        <h4>Masz maksymalny poziom</h4>
+                    }
+                </div>
+
+                <form asp-controller="Upgrade" asp-action="Upgrade" method="post" style="display:inline;">
+                    <input type="hidden" name="upgradeMineId" value="@Model.DiamondMine.Id" />
+                    <button type="submit" class="Upgrade-button" @(Model.DiamondMineLevelRequirments == null || !Model.DiamondMineLevelRequirments.Any() ? "disabled" : "")>Ulepsz</button>
+                </form>
+
+                @if (Model.PurchaseErrors.ContainsKey(Model.DiamondMine.Id))
+                {
+                    <div class="alert alert-danger" style="margin-top: 10px;">
+                        @Model.PurchaseErrors[Model.DiamondMine.Id]
+                    </div>
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>

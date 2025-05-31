@@ -12,7 +12,7 @@ using Projekt_Lab_11___12.Data;
 namespace Projekt_Lab_11___12.Migrations
 {
     [DbContext(typeof(Projekt_Lab_11___12Context))]
-    [Migration("20250518185153_Test")]
+    [Migration("20250531175215_Test")]
     partial class Test
     {
         /// <inheritdoc />
@@ -191,6 +191,9 @@ namespace Projekt_Lab_11___12.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
+                    b.Property<int>("MineResourceType")
+                        .HasColumnType("int");
+
                     b.Property<int>("ResourceType")
                         .HasColumnType("int");
 
@@ -216,6 +219,9 @@ namespace Projekt_Lab_11___12.Migrations
                         .HasColumnType("nvarchar(13)");
 
                     b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MineResourceType")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")

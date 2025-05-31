@@ -15,6 +15,7 @@ namespace Projekt_Lab_11___12.Models.Entities
         public double Amount { get; set; }
 
         public ResourceType ResourceType { get; set; }
+        public ResourceType MineResourceType { get; set; }
     }
 
 }

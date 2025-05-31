@@ -21,6 +21,9 @@ namespace Projekt_Lab_11___12
             builder.Services.AddScoped<IMineService, MineService>();
             builder.Services.AddScoped<IStoreService, StoreService>();
             builder.Services.AddScoped<IEquipmentService, EquipmentService>();
+            builder.Services.AddScoped<IUpgradeService, UpgradeService>();
+            builder.Services.AddScoped<IRankingService, RankingService>();
+            builder.Services.AddScoped<IUserStatisticsService, UserStatisticsService>();
 
 
             builder.Services.AddControllersWithViews();

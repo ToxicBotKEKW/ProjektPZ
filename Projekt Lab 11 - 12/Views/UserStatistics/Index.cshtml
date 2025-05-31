@@ -1,11 +1,11 @@
-﻿@model Projekt_Lab_11___12.Models.ViewModels.EquipmentViewModel
+﻿@model Projekt_Lab_11___12.Models.ViewModels.UserStatisticsViewModel
 
 @{
-    ViewData["Title"] = "Store";
+    ViewData["Title"] = "User Statistics";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/equipment-site.css" />
+    <link rel="stylesheet" href="~/css/userstatistics-site.css" />
 }
 
 @Html.AntiForgeryToken()
@@ -52,32 +52,55 @@
             </div>
         </div>
 
+        <h1>Dane Użytkownika @Model.UserStatViewModel.Email</h1>
+
+        <h2>Posiadane Żelazo: @Model.UserStatViewModel.Iron</h2>
+        <h2>Posiadane Złoto: @Model.UserStatViewModel.Gold</h2>
+        <h2>Posiadane Diamenty: @Model.UserStatViewModel.Diamond</h2>
+
+        <h1>Kopalnie Użytkownika</h1>
+
+        <div class="upgrade-mine">
+            <div class="upgrade-card">
+                <h2></h2>
+                <img src="~/img/iron-mine-2.png" alt="Iron Mine" class="mine-image" />
+                <h1>@Model.UserStatViewModel.IronMine.Name</h1>
+
+                <div class="resource-multiplier">
+                    <h4>Poziom: @Model.UserStatViewModel.IronMine.Level</h4>
+                </div>
+
+            </div>
+            <div class="upgrade-card">
+                <h2></h2>
+                <img src="~/img/gold-mine-2.png" alt="Gold Mine" class="mine-image" />
+                <h1>@Model.UserStatViewModel.GoldMine.Name</h1>
+
+                <div class="resource-multiplier">
+                    <h4>Poziom: @Model.UserStatViewModel.GoldMine.Level</h4>
+                </div>
+
+            </div>
+            <div class="upgrade-card">
+                <h2></h2>
+                <img src="~/img/diamond-mine-2.png" alt="Diamond Mine" class="mine-image" />
+                <h1>@Model.UserStatViewModel.DiamondMine.Name</h1>
+
+                <div class="resource-multiplier">
+                    <h4>Poziom: @Model.UserStatViewModel.DiamondMine.Level</h4>
+                </div>
+
+            </div>
+        </div>
+
+        <h1>Kilofy Posiadane Przez Użytkownika</h1>
+
         <div class="store-list">
-            @foreach (var item in Model.PickaxesEq)
+            @foreach (var item in Model.UserStatViewModel.PickaxesEq)
             {
                 <div class="pickaxe-card">
                     <h2>@item.Name</h2>
                     <img src="~/img/pickaxe/@item.ImageName" alt="@item.Name" class="pickaxe-image" />
-                    <p><strong>Wymagany poziom:</strong> @item.RequirmentLevel</p>
-
-                    <div class="resource-multiplier">
-                        <h4>Mnożnik zasobów:</h4>
-                        <ul>
-                            @foreach (var multiplier in item.PickaxeResourceMultipliers)
-                            {
-                                <li>@multiplier.ResourceType: @multiplier.Value %</li>
-                            }
-                        </ul>
-                    </div>
-
-                    <form asp-controller="Equipment" asp-action="Equip" method="post" style="display:inline;">
-                        <input type="hidden" name="pickaxeId" value="@item.Id" />
-                        <button type="submit" class="buy-button" @(item.Id == Model.UsedPickaxeId ? "disabled" : "enable")>
-                            Wyposaż
-                        </button>
-                    </form>
-
-
                 </div>
             }
         </div>

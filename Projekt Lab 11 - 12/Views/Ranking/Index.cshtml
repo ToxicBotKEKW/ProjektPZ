@@ -1,0 +1,113 @@
+﻿@model Projekt_Lab_11___12.Models.ViewModels.RankingViewModel
+
+@{
+    ViewData["Title"] = "Ranking";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/ranking-site.css" />
+}
+
+@Html.AntiForgeryToken()
+
+<div class="mine-container">
+    <div class="navbar">
+        <a asp-controller="Mine" asp-action="IronMine" class="navbar-link">
+            <img src="~/img/iron-mine.png" />
+        </a>
+        <a asp-controller="Mine" asp-action="GoldMine" class="navbar-link">
+            <img src="~/img/gold-mine.png" />
+        </a>
+        <a asp-controller="Mine" asp-action="DiamondMine" class="navbar-link">
+            <img src="~/img/diamond-mine.png" />
+        </a>
+        <a asp-controller="Store" asp-action="Index" class="navbar-link">
+            <img src="~/img/store.png" />
+        </a>
+        <a asp-controller="Equipment" asp-action="Index" class="navbar-link">
+            <img src="~/img/pickaxe/pickaxe-0.png" />
+        </a>
+        <a asp-controller="Upgrade" asp-action="Index" class="navbar-link">
+            <img src="~/img/upgrade.png" />
+        </a>
+        <a asp-controller="Ranking" asp-action="Index" class="navbar-link">
+            <img src="~/img/ranking.png" />
+        </a>
+        <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="navbar-link">
+            <button type="submit">
+                <img src="~/img/logout.png" alt="Logout" />
+            </button>
+        </form>
+    </div>
+
+    <div class="content">
+        <div class="player-info">
+            <div class="resources">
+                @if (Model != null)
+                {
+                    <span id="iron-count">@Model.Iron.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/iron.png" />
+                    <span id="gold-count">@Model.Gold.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/gold.png" />
+                    <span id="diamond-count">@Model.Diamond.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/diamond.png" />
+                }
+            </div>
+        </div>
+
+        <div class="ranking-table">
+            <h2>Ranking Graczy</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Miejsce</th>
+                        <th>Email</th>
+                        <th>Iron</th>
+                        <th>Gold</th>
+                        <th>Diamond</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.UserList != null && Model.UserList.Any())
+                    {
+                        int place = 1 + ((Model.CurrentPage - 1) * 10);
+                        foreach (var user in Model.UserList)
+                        {
+                            <tr onclick="location.href='@Url.Action("Index", "UserStatistics", new { userId = user.UserId })'">
+                                <td>@place</td>
+                                <td>@user.Emial</td>
+                                <td>@user.Iron.ToString("F2")</td>
+                                <td>@user.Gold.ToString("F2")</td>
+                                <td>@user.Diamond.ToString("F2")</td>
+                            </tr>
+                            place++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5">Brak danych do wyświetlenia.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="pagination">
+            @if (Model.TotalPages > 1)
+            {
+                <nav>
+                    <ul class="pagination-list">
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="@(i == Model.CurrentPage ? "active-page" : "")">
+                                <a asp-action="Index" asp-route-page="@i">@i</a>
+
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </div>
+
+
+    </div>
+</div>

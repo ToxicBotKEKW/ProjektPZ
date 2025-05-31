@@ -13,6 +13,7 @@ using Projekt_Lab_11___12.Models.Entities;
 
 namespace Projekt_Lab_11___12.Areas.Identity.Pages.Account
 {
+    [AllowAnonymous]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
@@ -34,9 +35,7 @@ namespace Projekt_Lab_11___12.Areas.Identity.Pages.Account
             }
             else
             {
-                // This needs to be a redirect so that the browser performs a new
-                // request and the identity for the user gets updated.
-                return RedirectToPage();
+                return LocalRedirect("/Identity/Account/Login"); ;
             }
         }
     }

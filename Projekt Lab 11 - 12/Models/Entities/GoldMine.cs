@@ -4,6 +4,7 @@
     {
         public GoldMine() {
             Name = "Kopalnia Złota";
+            MineResourceType = ResourceType.Gold;
         }
     }
 }

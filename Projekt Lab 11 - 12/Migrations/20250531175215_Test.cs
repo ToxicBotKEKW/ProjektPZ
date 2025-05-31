@@ -34,7 +34,8 @@ namespace Projekt_Lab_11___12.Migrations
                     Level = table.Column<int>(type: "int", nullable: false),
                     ResourceTypeId = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ResourceType = table.Column<int>(type: "int", nullable: false)
+                    ResourceType = table.Column<int>(type: "int", nullable: false),
+                    MineResourceType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,6 +50,7 @@ namespace Projekt_Lab_11___12.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Level = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MineResourceType = table.Column<int>(type: "int", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false)
                 },
                 constraints: table =>

@@ -4,6 +4,7 @@
     {
         public DiamondMine() {
             Name = "Kopalnia Diamentów";
+            MineResourceType = ResourceType.Diamond;
         }
     }
 }
