@@ -86,13 +86,13 @@
 }
 }
 
-& .upgrade-mine {
+& .user-mine {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
     transition: 2s all;
-    & .upgrade-card
+    & .user-mine-card
 
 {
     background-color: #12263A;
@@ -112,7 +112,7 @@
 }
 }
 
-& .store-list {
+& .user-pickaxe-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;

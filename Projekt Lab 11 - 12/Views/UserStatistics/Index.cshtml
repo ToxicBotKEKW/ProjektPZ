@@ -60,8 +60,8 @@
 
         <h1>Kopalnie Użytkownika</h1>
 
-        <div class="upgrade-mine">
-            <div class="upgrade-card">
+        <div class="user-mine">
+            <div class="user-mine-card">
                 <h2></h2>
                 <img src="~/img/iron-mine-2.png" alt="Iron Mine" class="mine-image" />
                 <h1>@Model.UserStatViewModel.IronMine.Name</h1>
@@ -71,7 +71,7 @@
                 </div>
 
             </div>
-            <div class="upgrade-card">
+            <div class="user-mine-card">
                 <h2></h2>
                 <img src="~/img/gold-mine-2.png" alt="Gold Mine" class="mine-image" />
                 <h1>@Model.UserStatViewModel.GoldMine.Name</h1>
@@ -81,7 +81,7 @@
                 </div>
 
             </div>
-            <div class="upgrade-card">
+            <div class="user-mine-card">
                 <h2></h2>
                 <img src="~/img/diamond-mine-2.png" alt="Diamond Mine" class="mine-image" />
                 <h1>@Model.UserStatViewModel.DiamondMine.Name</h1>
@@ -95,7 +95,7 @@
 
         <h1>Kilofy Posiadane Przez Użytkownika</h1>
 
-        <div class="store-list">
+        <div class="user-pickaxe-list">
             @foreach (var item in Model.UserStatViewModel.PickaxesEq)
             {
                 <div class="pickaxe-card">
