@@ -1,12 +1,36 @@
-﻿using Projekt_Lab_11___12.Models.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using Projekt_Lab_11___12.Models.Entities;
 using System;
 
 namespace Projekt_Lab_11___12.Data
 {
     public static class InitData
     {
-        public static void Initialize(Projekt_Lab_11___12Context context)
+        public async static Task Initialize(
+            Projekt_Lab_11___12Context context,
+            RoleManager<IdentityRole> roleManager,
+            UserManager<User> userManager
+            )
         {
+
+            string[] roleNames = { "Admin", "User", "Moderator" };
+
+            foreach (var roleName in roleNames)
+            {
+                if (!roleManager.RoleExistsAsync(roleName).Result)
+                {
+                    roleManager.CreateAsync(new IdentityRole(roleName)).Wait();
+                }
+            }
+
+            var adminUser = await userManager.FindByEmailAsync("kubabonda@o2.pl");
+            if (adminUser != null) {
+                if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+                {
+                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                }
+            }
+
 
             if (context.Pickaxes.Any() || context.Shops.Any())
             {
@@ -360,7 +384,7 @@ namespace Projekt_Lab_11___12.Data
 
 
 
-            context.SaveChanges();
+           await context.SaveChangesAsync();
         }
     }
 }

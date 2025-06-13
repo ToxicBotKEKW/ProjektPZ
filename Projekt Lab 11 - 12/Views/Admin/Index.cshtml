@@ -1,0 +1,151 @@
+﻿@model Projekt_Lab_11___12.Models.ViewModels.AdminViewModel
+
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-site.css" />
+}
+
+@section Scripts {
+    <script>
+        function addPickaxeToShop(id) {
+            let model = document.getElementById("addPickaxeToShop");
+            let pickaxeShopId = document.getElementById("pickaxeShopId");
+
+            pickaxeShopId.setAttribute("value", id);
+
+            model.style.display = "flex";
+            console.log(id);
+        }
+
+        function closeAddToShopWindow(){
+            let model = document.getElementById("addPickaxeToShop").style.display = "none";
+        }
+    </script>
+}
+
+@Html.AntiForgeryToken()
+
+<div class="mine-container">
+    <div class="navbar">
+        <a asp-controller="Mine" asp-action="IronMine" class="navbar-link">
+            <img src="~/img/iron-mine.png" />
+        </a>
+        <a asp-controller="Mine" asp-action="GoldMine" class="navbar-link">
+            <img src="~/img/gold-mine.png" />
+        </a>
+        <a asp-controller="Mine" asp-action="DiamondMine" class="navbar-link">
+            <img src="~/img/diamond-mine.png" />
+        </a>
+        <a asp-controller="Store" asp-action="Index" class="navbar-link">
+            <img src="~/img/store.png" />
+        </a>
+        <a asp-controller="Equipment" asp-action="Index" class="navbar-link">
+            <img src="~/img/pickaxe/pickaxe-0.png" />
+        </a>
+        <a asp-controller="Upgrade" asp-action="Index" class="navbar-link">
+            <img src="~/img/upgrade.png" />
+        </a>
+        <a asp-controller="Ranking" asp-action="Index" class="navbar-link">
+            <img src="~/img/ranking.png" />
+        </a>
+        <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="navbar-link">
+            <button type="submit">
+                <img src="~/img/logout.png" alt="Logout" />
+            </button>
+        </form>
+    </div>
+
+    <div class="content">
+        <div class="player-info">
+            <div class="resources">
+                @if (Model != null)
+                {
+                    <span id="iron-count">@Model.Iron.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/iron.png" />
+                    <span id="gold-count">@Model.Gold.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/gold.png" />
+                    <span id="diamond-count">@Model.Diamond.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/diamond.png" />
+                }
+            </div>
+        </div>
+
+        <h1>Kilofy w Systemie</h1>
+
+        <div class="store-list">
+            @foreach (var item in Model.PickaxesInSystem)
+            {
+                <div class="pickaxe-card">
+                    <h2>@item.Name</h2>
+                    <img src="~/img/pickaxe/@item.ImageName" alt="@item.Name" class="pickaxe-image" />
+                    <p><strong>Wymagany poziom:</strong> @item.RequirmentLevel</p>
+
+                    <div class="resource-multiplier">
+                        <h4>Mnożnik zasobów:</h4>
+                        <ul>
+                            @foreach (var multiplier in item.PickaxeResourceMultipliers)
+                            {
+                                <li>@multiplier.ResourceType: @multiplier.Value %</li>
+                            }
+                        </ul>
+                    </div>
+
+                    <button onclick="addPickaxeToShop(@item.Id)" class="add-button" @(Model.PickaxesInShop.Any(x => x.Pickaxe.Id == item.Id) ? "disabled" : "enable")>Dodaj do sklepu</button>
+
+                </div>
+            }
+        </div>
+
+        <h1>Kilofy w Sklepie</h1>
+
+        <div class="store-list">
+            @foreach (var item in Model.PickaxesInShop)
+            {
+                <div class="pickaxe-card">
+                    <h2>@item.Pickaxe.Name</h2>
+                    <img src="~/img/pickaxe/@item.Pickaxe.ImageName" alt="@item.Pickaxe.Name" class="pickaxe-image" />
+                    <p><strong>Wymagany poziom:</strong> @item.Pickaxe.RequirmentLevel</p>
+
+                    <div class="resource-multiplier">
+                        <h4>Mnożnik zasobów:</h4>
+                        <ul>
+                            @foreach (var multiplier in item.Pickaxe.PickaxeResourceMultipliers)
+                            {
+                                <li>@multiplier.ResourceType: @multiplier.Value %</li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="resource-costs">
+                        <h4>Koszty:</h4>
+                        <ul>
+                            @foreach (var cost in item.PickaxeShopResourceCosts)
+                            {
+                                <li>@cost.ResourceType: @cost.Value</li>
+                            }
+                        </ul>
+                    </div>
+
+                    <form asp-controller="Admin" asp-action="RemoveFromShop" method="post" style="display:inline;">
+                        <input type="hidden" name="pickaxeShopId" value="@item.Id" />
+                        <button type="submit" class="remove-button">Usuń ze sklepu</button>
+                    </form>
+
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <div id="addPickaxeToShop">
+        <form asp-controller="Admin" asp-action="AddToShop" method="post">
+            <input type="hidden" name="pickaxeShopId" id="pickaxeShopId" />
+            <input min="0" type="number" name="ironCost" />
+            <input min="0" type="number" name="goldCost" />
+            <input min="0" type="number" name="diamondCost" />
+            <button type="submit" class="remove-button">Dodaj</button>
+            <button type="button" onclick="closeAddToShopWindow()">X</button>
+        </form>
+    </div>
+</div>
+
