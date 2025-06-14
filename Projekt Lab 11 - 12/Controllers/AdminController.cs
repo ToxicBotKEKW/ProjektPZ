@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Projekt_Lab_11___12.Models.Entities;
 using Projekt_Lab_11___12.Models.ViewModels;
 using Projekt_Lab_11___12.Services.Interfaces;
 
@@ -41,6 +44,17 @@ namespace Projekt_Lab_11___12.Controllers
         public async Task<IActionResult> RemoveFromShop(int pickaxeShopId)
         {
             await _adminService.RemoveFromShop(pickaxeShopId);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePickaxe(AdminViewModel adminViewModel)
+        {
+            await _adminService.CreatePickaxe(adminViewModel);
+
             return RedirectToAction(nameof(Index));
         }
     }

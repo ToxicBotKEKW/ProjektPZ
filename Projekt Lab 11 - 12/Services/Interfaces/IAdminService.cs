@@ -12,5 +12,7 @@ namespace Projekt_Lab_11___12.Services.Interfaces
             double goldCost,
             double diamondCost
             );
+
+        public Task CreatePickaxe(AdminViewModel adminViewModel);
     }
 }

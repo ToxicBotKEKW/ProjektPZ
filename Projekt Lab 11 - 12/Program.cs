@@ -9,7 +9,7 @@ namespace Projekt_Lab_11___12
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("Projekt_Lab_11___12ContextConnection") ?? throw new InvalidOperationException("Connection string 'Projekt_Lab_11___12ContextConnection' not found.");
@@ -43,7 +43,7 @@ namespace Projekt_Lab_11___12
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-                InitData.Initialize(context, roleManager, userManager);
+                await InitData.Initialize(context, roleManager, userManager);
             }
 
             if (!app.Environment.IsDevelopment())

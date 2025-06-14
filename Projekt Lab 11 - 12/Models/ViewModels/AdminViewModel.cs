@@ -1,4 +1,5 @@
-﻿using Projekt_Lab_11___12.Models.Entities;
+﻿using Projekt_Lab_11___12.Models.DTO;
+using Projekt_Lab_11___12.Models.Entities;
 
 namespace Projekt_Lab_11___12.Models.ViewModels
 {
@@ -9,5 +10,6 @@ namespace Projekt_Lab_11___12.Models.ViewModels
         public double Diamond { get; set; }
         public List<Pickaxe> PickaxesInSystem { get; set; }
         public List<PickaxeShop> PickaxesInShop { get; set; }
+        public NewPickaxeDTO NewPickaxe { get; set; }
     }
 }

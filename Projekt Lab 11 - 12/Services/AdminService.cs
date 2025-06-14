@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Projekt_Lab_11___12.Data;
+using Projekt_Lab_11___12.Models.DTO;
 using Projekt_Lab_11___12.Models.Entities;
 using Projekt_Lab_11___12.Models.ViewModels;
 using Projekt_Lab_11___12.Services.Interfaces;
@@ -12,12 +14,14 @@ namespace Projekt_Lab_11___12.Services
         private readonly Projekt_Lab_11___12Context _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<User> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AdminService(Projekt_Lab_11___12Context context, IHttpContextAccessor httpContextAccessor, UserManager<User> userManager)
+        public AdminService(Projekt_Lab_11___12Context context, IHttpContextAccessor httpContextAccessor, UserManager<User> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<AdminViewModel> AdminViewModel()
@@ -44,7 +48,8 @@ namespace Projekt_Lab_11___12.Services
                 Gold = user.Gold,
                 Diamond = user.Diamond,
                 PickaxesInSystem = pickaxesInSystem,
-                PickaxesInShop = pickaxeInShops
+                PickaxesInShop = pickaxeInShops,
+                NewPickaxe = new NewPickaxeDTO()
             };
 
             return model;
@@ -53,13 +58,9 @@ namespace Projekt_Lab_11___12.Services
 
         public async Task AddToShop(int pickaxeShopId, double ironCost, double goldCost, double diamondCost)
         {
-            Console.WriteLine("1");
-
             if(await _context.PickaxeShops.FirstOrDefaultAsync(x => x.Id == pickaxeShopId) != null) { 
                 return; 
             }
-
-            Console.WriteLine("2");
 
             var pickaxe = await _context.Pickaxes
                 .FirstOrDefaultAsync(x => x.Id == pickaxeShopId);
@@ -67,7 +68,6 @@ namespace Projekt_Lab_11___12.Services
             if (pickaxe == null) { 
                 return ;
             }
-            Console.WriteLine("3");
 
             PickaxeShop pickaxeShop = new PickaxeShop()
             {
@@ -89,8 +89,6 @@ namespace Projekt_Lab_11___12.Services
                 }
             };
 
-            Console.WriteLine("4");
-
             _context.PickaxeShops.Add(pickaxeShop);
 
             await _context.SaveChangesAsync();
@@ -109,6 +107,49 @@ namespace Projekt_Lab_11___12.Services
 
             _context.PickaxeShops.Remove(pickaxeShop);
 
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task CreatePickaxe(AdminViewModel adminViewModel)
+        {
+            string uniqueFileName = null;
+            if (adminViewModel.NewPickaxe.ImageFile != null && adminViewModel.NewPickaxe.ImageFile.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img", "pickaxe");
+                Directory.CreateDirectory(uploadsFolder);
+
+                var fileExtension = Path.GetExtension(adminViewModel.NewPickaxe.ImageFile.FileName);
+                string fileName;
+
+                do
+                {
+                    fileName = Guid.NewGuid().ToString() + fileExtension;
+                    uniqueFileName = fileName;
+                }
+                while (System.IO.File.Exists(Path.Combine(uploadsFolder, fileName)));
+
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await adminViewModel.NewPickaxe.ImageFile.CopyToAsync(stream);
+                }
+            }
+
+            var pickaxe = new Pickaxe
+            {
+                Name = adminViewModel.NewPickaxe.Name,
+                ImageName = uniqueFileName,
+                RequirmentLevel = adminViewModel.NewPickaxe.RequirmentLevel,
+                PickaxeResourceMultipliers = new List<PickaxeResourceMultiplier>
+                {
+                    new PickaxeResourceMultiplier { ResourceType = ResourceType.Iron, Value = adminViewModel.NewPickaxe.IronMultipler },
+                    new PickaxeResourceMultiplier { ResourceType = ResourceType.Gold, Value = adminViewModel.NewPickaxe.GoldMultipler },
+                    new PickaxeResourceMultiplier { ResourceType = ResourceType.Diamond, Value = adminViewModel.NewPickaxe.DiamondMultipler }
+                }
+            };
+
+            _context.Pickaxes.Add(pickaxe);
             await _context.SaveChangesAsync();
         }
     }

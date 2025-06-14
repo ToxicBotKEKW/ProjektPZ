@@ -23,7 +23,23 @@
         function closeAddToShopWindow(){
             let model = document.getElementById("addPickaxeToShop").style.display = "none";
         }
+
+
+        function addPickaxeToSystem() {
+            let model = document.getElementById("addPickaxeToSystem");
+
+            model.style.display = "flex";
+            console.log(id);
+        }
+
+        function closeAddToSystemWindow() {
+            let model = document.getElementById("addPickaxeToSystem").style.display = "none";
+        }
     </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 
 @Html.AntiForgeryToken()
@@ -96,6 +112,8 @@
             }
         </div>
 
+        <button onclick="addPickaxeToSystem()" id="addPickaxeToSystemButton">Dodaj kilof</button>
+
         <h1>Kilofy w Sklepie</h1>
 
         <div class="store-list">
@@ -139,13 +157,61 @@
 
     <div id="addPickaxeToShop">
         <form asp-controller="Admin" asp-action="AddToShop" method="post">
+            <h2>Dodanie kilofu do sklepu</h2>
             <input type="hidden" name="pickaxeShopId" id="pickaxeShopId" />
-            <input min="0" type="number" name="ironCost" />
-            <input min="0" type="number" name="goldCost" />
-            <input min="0" type="number" name="diamondCost" />
+            <input min="0" type="number" name="ironCost" placeholder="Koszt kilofa w żelazie" />
+            <input min="0" type="number" name="goldCost" placeholder="Koszt kilofa w złocie" />
+            <input min="0" type="number" name="diamondCost" placeholder="Koszt kilofa w diamentach" />
             <button type="submit" class="remove-button">Dodaj</button>
             <button type="button" onclick="closeAddToShopWindow()">X</button>
         </form>
     </div>
+
+    <div id="addPickaxeToSystem">
+        <form asp-action="CreatePickaxe" method="post" enctype="multipart/form-data">
+            <h2>Dodanie kilofu do systemu</h2>
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="NewPickaxe.Name" class="control-label"></label>
+                <input asp-for="NewPickaxe.Name" class="form-control" placeholder="Nazwa kilofu" />
+                <span asp-validation-for="NewPickaxe.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewPickaxe.ImageFile" class="control-label"></label>
+                <input asp-for="NewPickaxe.ImageFile" type="file" class="form-control" placeholder="Obrazek kilofu" />
+                <span asp-validation-for="NewPickaxe.ImageFile" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewPickaxe.IronMultipler" class="control-label"></label>
+                <input asp-for="NewPickaxe.IronMultipler" class="form-control" type="number" min="1" placeholder="Mnożnik żelaza" />
+                <span asp-validation-for="NewPickaxe.IronMultipler" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewPickaxe.GoldMultipler" class="control-label"></label>
+                <input asp-for="NewPickaxe.GoldMultipler" class="form-control" type="number" min="1" placeholder="Mnożnik złota" />
+                <span asp-validation-for="NewPickaxe.GoldMultipler" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewPickaxe.DiamondMultipler" class="control-label"></label>
+                <input asp-for="NewPickaxe.DiamondMultipler" class="form-control" type="number" min="1" placeholder="Mnożnik diamentów" />
+                <span asp-validation-for="NewPickaxe.DiamondMultipler" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewPickaxe.RequirmentLevel" class="control-label"></label>
+                <input asp-for="NewPickaxe.RequirmentLevel" class="form-control" type="number" min="1" placeholder="Wymagany poziom" />
+                <span asp-validation-for="NewPickaxe.RequirmentLevel" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Dodaj kilof</button>
+            <button type="button" onclick="closeAddToSystemWindow()">X</button>
+        </form>
+    </div>
+
 </div>
 
