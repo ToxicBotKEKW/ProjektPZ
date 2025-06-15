@@ -30,6 +30,9 @@ namespace Projekt_Lab_11___12.Services
 
             user = await _context.Users
                 .Include(u => u.PickaxesEq)
+                .Include(u => u.IronMine)
+                .Include(u => u.GoldMine)
+                .Include(u => u.DiamondMine)
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
 
             List<int> userPickaxeIds = user.PickaxesEq.Select(p => p.Id).ToList();
@@ -76,6 +79,10 @@ namespace Projekt_Lab_11___12.Services
                 Iron = user.Iron,
                 Gold = user.Gold,
                 Diamond = user.Diamond,
+                Emerald = user.Emerald,
+                IronMine = user.IronMine,
+                GoldMine = user.GoldMine,
+                DiamondMine = user.DiamondMine,
                 CurrentPage = page,
                 TotalPages = (int)Math.Ceiling((double)allItems.Count / pageSize),
                 SearchQuery = searchQuery,
@@ -165,6 +172,58 @@ namespace Projekt_Lab_11___12.Services
             await _context.SaveChangesAsync();
 
             return (true, "Zakup powiódł się!");
+        }
+
+        public async Task BuyAdditionalRes(int mineId)
+        {
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            if (user == null) return;
+
+            user = await _context.Users
+                 .Include(u => u.IronMine)
+                 .Include(u => u.GoldMine)
+                 .Include(u => u.DiamondMine)
+                 .FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            Mine mine = await _context.Mines.FirstOrDefaultAsync(x => x.Id == mineId);
+
+            bool mineBelongsToUser =
+                (user.IronMine != null && user.IronMine.Id == mine.Id) ||
+                (user.GoldMine != null && user.GoldMine.Id == mine.Id) ||
+                (user.DiamondMine != null && user.DiamondMine.Id == mine.Id);
+
+            if (!mineBelongsToUser)
+            {
+                return;
+            }
+
+            switch (mine.MineResourceType)
+            {
+                case ResourceType.Iron:
+                    if(user.Emerald > 10)
+                    {
+                        user.Emerald -= 10;
+                        mine.PermAdditionalValue += 1;
+                    }
+                    break;
+                case ResourceType.Gold:
+                    if (user.Emerald > 20)
+                    {
+                        user.Emerald -= 20;
+
+                        mine.PermAdditionalValue += 1;
+                    }
+                    break;
+                case ResourceType.Diamond:
+                    if (user.Emerald > 40)
+                    {
+                        user.Emerald -= 40;
+                        mine.PermAdditionalValue += 1;
+                    }
+                    break;
+            }
+            await _context.SaveChangesAsync();
+
         }
     }
 }

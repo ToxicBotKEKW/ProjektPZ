@@ -7,6 +7,7 @@ namespace Projekt_Lab_11___12.Models.ViewModels
         public double Iron { get; set; }
         public double Gold { get; set; }
         public double Diamond { get; set; }
+        public double Emerald { get; set; }
         public String Email { get; set; }
         public List<Pickaxe> PickaxesEq { get; set; }
         public IronMine IronMine { get; set; }

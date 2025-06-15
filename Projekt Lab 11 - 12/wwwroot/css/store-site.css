@@ -244,5 +244,75 @@
 
     }
 
+& .upgrade-mine {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    transition: 2s all;
+    & .upgrade-card
+
+{
+    background-color: #12263A;
+    border-radius: 12px;
+    padding: 16px;
+    width: 280px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    text-align: center;
+    & .mine-image
+
+{
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+& .resource-costs ul,
+& .resource-multiplier ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 1px;
+}
+
+& .resource-costs h4,
+& .resource-multiplier h4 {
+    padding: 0;
+    margin: 0;
+    & .bonus-point
+
+{
+    color: forestgreen;
+}
+
+}
+
+& .Upgrade-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 1s all;
+    &:disabled
+
+{
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+&:disabled:hover {
+    background-color: gray;
+}
+
+&:hover {
+    background-color: #27ae60;
+}
+
+}
+}
+}
+
   }
 }

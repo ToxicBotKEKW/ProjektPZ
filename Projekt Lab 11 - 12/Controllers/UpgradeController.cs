@@ -38,5 +38,13 @@ namespace Projekt_Lab_11___12.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+
+        [Authorize, HttpPost]
+        public async Task<IActionResult> ResetAccount()
+        {
+            await _upgradeService.ResetAccount();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

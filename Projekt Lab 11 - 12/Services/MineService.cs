@@ -38,7 +38,8 @@ namespace Projekt_Lab_11___12.Services
             {
                 Iron = user.Iron,
                 Gold = user.Gold,
-                Diamond = user.Diamond
+                Diamond = user.Diamond,
+                Emerald = user.Emerald
             };
 
             return model;
@@ -97,12 +98,15 @@ namespace Projekt_Lab_11___12.Services
             switch (resourceType)
             {
                 case ResourceType.Iron:
+                    points += user.IronMine.PermAdditionalValue;
                     user.Iron += points;
                     break;
                 case ResourceType.Gold:
+                    points += user.GoldMine.PermAdditionalValue;
                     user.Gold += points;
                     break;
                 case ResourceType.Diamond:
+                    points += user.DiamondMine.PermAdditionalValue;
                     user.Diamond += points;
                     break;
             }

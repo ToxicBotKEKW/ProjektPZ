@@ -58,6 +58,7 @@ namespace Projekt_Lab_11___12.Services
                 Iron = user.Iron,
                 Gold = user.Gold,
                 Diamond = user.Diamond,
+                Emerald = user.Emerald,
                 IronMine = user.IronMine,
                 GoldMine = user.GoldMine,
                 DiamondMine = user.DiamondMine,
@@ -147,6 +148,47 @@ namespace Projekt_Lab_11___12.Services
             await _context.SaveChangesAsync();
 
             return (true, "Poprawnie udało się ulepszyć kopalnie.");
+        }
+
+        public async Task ResetAccount()
+        {
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            if (user == null)
+            {
+                return;
+            }
+
+            user = await _context.Users
+                .Include(u => u.IronMine)
+                .Include(u => u.GoldMine)
+                .Include(u => u.DiamondMine)
+                .Include(u => u.PickaxesEq)
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            double emerald = user.Emerald;
+            emerald += (user.IronMine.Level - 1) * 5;
+            emerald += (user.GoldMine.Level - 1) * 10;
+            emerald += (user.DiamondMine.Level - 1) * 20;
+
+            emerald += (user.PickaxesEq.Count - 1) * 10;
+
+            user.IronMine.Level = 1;
+            user.GoldMine.Level = 1;
+            user.DiamondMine.Level = 1;
+
+            user.PickaxesEq.Clear();
+
+            Pickaxe pickaxe = await _context.Pickaxes.FirstOrDefaultAsync(x => x.Id == 1);
+
+            user.PickaxesEq.Add(pickaxe);
+            user.UsedPickaxe = pickaxe;
+
+            user.Iron = 0.0;
+            user.Gold = 0.0;
+            user.Diamond = 0.0;
+            user.Emerald = emerald;
+            
+            await _context.SaveChangesAsync();
         }
     }
 }

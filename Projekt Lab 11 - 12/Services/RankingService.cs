@@ -46,7 +46,8 @@ namespace Projekt_Lab_11___12.Services
                     Emial = userItem.Email,
                     Iron = userItem.Iron,
                     Gold = userItem.Gold,
-                    Diamond = userItem.Diamond
+                    Diamond = userItem.Diamond,
+                    Emerald = user.Emerald
                 });
             }
 
@@ -56,6 +57,7 @@ namespace Projekt_Lab_11___12.Services
                 Iron = user.Iron,
                 Gold = user.Gold,
                 Diamond = user.Diamond,
+                Emerald = user.Emerald,
                 UserList = users,
                 CurrentPage = page,
                 TotalPages = (int)Math.Ceiling((double)users.Count / pageSize)

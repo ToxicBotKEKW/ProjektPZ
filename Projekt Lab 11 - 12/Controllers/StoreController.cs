@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Projekt_Lab_11___12.Services;
 using Projekt_Lab_11___12.Services.Interfaces;
 
 namespace Projekt_Lab_11___12.Controllers
@@ -42,6 +43,14 @@ namespace Projekt_Lab_11___12.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
+        }
+
+        [Authorize, HttpPost]
+        public async Task<IActionResult> BuyAdditionalRes(int mineId)
+        {
+            await _storeService.BuyAdditionalRes(mineId);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

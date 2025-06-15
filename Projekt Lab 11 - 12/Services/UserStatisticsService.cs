@@ -37,6 +37,7 @@ namespace Projekt_Lab_11___12.Services
                 Iron = searchUser.Iron,
                 Gold = searchUser.Gold,
                 Diamond = searchUser.Diamond,
+                Emerald = user.Emerald,
                 Email = searchUser.Email,
                 IronMine = searchUser.IronMine,
                 GoldMine = searchUser.GoldMine,

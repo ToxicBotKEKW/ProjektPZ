@@ -90,10 +90,12 @@
     background-color: #12263A;
     border-radius: 12px;
     padding: 16px;
-    width: 250px;
+    width: 280px;
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
     text-align: center;
-    & .mine-image
+    
+        
+        & .mine-image
 
 {
     width: 100px;
@@ -112,6 +114,10 @@
 & .resource-multiplier h4 {
     padding: 0;
     margin: 0;
+    & .bonus-point
+    {
+        color: forestgreen;
+    }
 }
 
 & .Upgrade-button {
@@ -144,4 +150,18 @@
 
 
     }
+& .reset-account-button {
+    margin: 10px 0px 10px 20px;
+    padding: 8px 16px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 1s all;
+
+&:hover {
+    background-color: #27ae60;
+}
+}
 }

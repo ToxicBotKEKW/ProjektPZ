@@ -33,6 +33,12 @@
         <a asp-controller="Ranking" asp-action="Index" class="navbar-link">
             <img src="~/img/ranking.png" />
         </a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Admin" asp-action="Index" class="navbar-link">
+                <img src="~/img/admin.png" />
+            </a>
+        }
         <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="navbar-link">
             <button type="submit">
                 <img src="~/img/logout.png" alt="Logout" />
@@ -48,6 +54,7 @@
                     <span id="iron-count">@Model.Iron.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/iron.png" />
                     <span id="gold-count">@Model.Gold.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/gold.png" />
                     <span id="diamond-count">@Model.Diamond.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/diamond.png" />
+                    <span id="diamond-count">@Model.Emerald.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)</span> <img src="~/img/emerald.png" />
                 }
             </div>
         </div>
@@ -127,6 +134,77 @@
                 </nav>
             }
         </div>
+
+        <div class="upgrade-mine">
+            <div class="upgrade-card">
+                <h2></h2>
+                <img src="~/img/iron-mine-2.png" alt="Iron Mine" class="mine-image" />
+                <h1>@Model.IronMine.Name</h1>
+
+
+                <div class="resource-multiplier">
+                    <h4>Dodatkowe zasoby za kliknięcie: 1</h4>
+                </div>
+
+                <div class="resource-costs">
+                    <h4>Koszt ulepszenia:</h4>
+                    <ul>
+                         <li>Emeraldy: 10</li>
+                    </ul>
+                </div>
+
+                <form asp-controller="Store" asp-action="BuyAdditionalRes" method="post" style="display:inline;">
+                    <input type="hidden" name="mineId" value="@Model.IronMine.Id" />
+                    <button type="submit" class="Upgrade-button" @(Model.Emerald < 10 ? "disabled" : "")>Kup</button>
+                </form>
+
+            </div>
+            <div class="upgrade-card">
+                <h2></h2>
+                <img src="~/img/iron-mine-2.png" alt="Iron Mine" class="mine-image" />
+                <h1>@Model.GoldMine.Name</h1>
+
+
+                <div class="resource-multiplier">
+                    <h4>Dodatkowe zasoby za kliknięcie: 1</h4>
+                </div>
+
+                <div class="resource-costs">
+                    <h4>Koszt ulepszenia:</h4>
+                    <ul>
+                        <li>Emeraldy: 20</li>
+                    </ul>
+                </div>
+
+                <form asp-controller="Store" asp-action="BuyAdditionalRes" method="post" style="display:inline;">
+                    <input type="hidden" name="mineId" value="@Model.GoldMine.Id" />
+                    <button type="submit" class="Upgrade-button" @(Model.Emerald < 20 ? "disabled" : "")>Kup</button>
+                </form>
+
+            </div>
+            <div class="upgrade-card">
+                <h2></h2>
+                <img src="~/img/iron-mine-2.png" alt="Iron Mine" class="mine-image" />
+                <h1>@Model.DiamondMine.Name</h1>
+
+
+                <div class="resource-multiplier">
+                    <h4>Dodatkowe zasoby za kliknięcie: 1</h4>
+                </div>
+
+                <div class="resource-costs">
+                    <h4>Koszt ulepszenia:</h4>
+                    <ul>
+                        <li>Emeraldy: 40</li>
+                    </ul>
+                </div>
+
+                <form asp-controller="Store" asp-action="BuyAdditionalRes" method="post" style="display:inline;">
+                    <input type="hidden" name="mineId" value="@Model.DiamondMine.Id" />
+                    <button type="submit" class="Upgrade-button" @(Model.Emerald < 40 ? "disabled" : "")>Kup</button>
+                </form>
+
+            </div>
 
 
     </div>

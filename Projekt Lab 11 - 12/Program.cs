@@ -4,7 +4,8 @@ using Projekt_Lab_11___12.Data;
 using Projekt_Lab_11___12.Models.Entities;
 using Projekt_Lab_11___12.Services.Interfaces;
 using Projekt_Lab_11___12.Services;
-using System;
+using Microsoft.AspNetCore.Identity.UI.Services;
+
 namespace Projekt_Lab_11___12
 {
     public class Program
@@ -12,13 +13,19 @@ namespace Projekt_Lab_11___12
         public async static Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("Projekt_Lab_11___12ContextConnection") ?? throw new InvalidOperationException("Connection string 'Projekt_Lab_11___12ContextConnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("Projekt_Lab_11___12ContextConnection")
+                ?? throw new InvalidOperationException("Connection string 'Projekt_Lab_11___12ContextConnection' not found.");
 
-            builder.Services.AddDbContext<Projekt_Lab_11___12Context>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<Projekt_Lab_11___12Context>(options =>
+                options.UseSqlServer(connectionString));
 
-            builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-             .AddEntityFrameworkStores<Projekt_Lab_11___12Context>()
-             .AddDefaultTokenProviders();
+            builder.Services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+            })
+            .AddEntityFrameworkStores<Projekt_Lab_11___12Context>()
+            .AddDefaultTokenProviders()
+            .AddDefaultUI();
 
 
             builder.Services.AddScoped<IMineService, MineService>();
@@ -32,8 +39,6 @@ namespace Projekt_Lab_11___12
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
-
-
 
             var app = builder.Build();
 

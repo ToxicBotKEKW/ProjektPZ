@@ -24,6 +24,7 @@ public class User : IdentityUser
     public double Iron { get; set; } = 0.0;
     public double Gold { get; set; } = 0.0;
 	public double Diamond { get; set; } = 0.0;
+	public double Emerald { get; set; } = 0.0;
 
 
 }

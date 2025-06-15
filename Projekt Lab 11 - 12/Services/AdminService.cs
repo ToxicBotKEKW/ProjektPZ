@@ -47,6 +47,7 @@ namespace Projekt_Lab_11___12.Services
                 Iron = user.Iron,
                 Gold = user.Gold,
                 Diamond = user.Diamond,
+                Emerald = user.Emerald,
                 PickaxesInSystem = pickaxesInSystem,
                 PickaxesInShop = pickaxeInShops,
                 NewPickaxe = new NewPickaxeDTO()

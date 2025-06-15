@@ -5,5 +5,6 @@
         public double Iron { get; set; }
         public double Gold { get; set; }
         public double Diamond { get; set; }
+        public double Emerald { get; set; }
     }
 }
