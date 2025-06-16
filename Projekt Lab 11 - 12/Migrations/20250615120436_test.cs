@@ -26,6 +26,20 @@ namespace Projekt_Lab_11___12.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BonusClicks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaxClicks = table.Column<int>(type: "int", nullable: false),
+                    CurrentClicks = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BonusClicks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LevelRequirements",
                 columns: table => new
                 {
@@ -40,23 +54,6 @@ namespace Projekt_Lab_11___12.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LevelRequirements", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Mines",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Level = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MineResourceType = table.Column<int>(type: "int", nullable: false),
-                    PermAdditionalValue = table.Column<double>(type: "float", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Mines", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,6 +121,77 @@ namespace Projekt_Lab_11___12.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Mines",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MineResourceType = table.Column<int>(type: "int", nullable: false),
+                    PermAdditionalValue = table.Column<double>(type: "float", nullable: false),
+                    BonusClicksId = table.Column<int>(type: "int", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mines", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Mines_BonusClicks_BonusClicksId",
+                        column: x => x.BonusClicksId,
+                        principalTable: "BonusClicks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PickaxeResourceMultipliers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PickaxeId = table.Column<int>(type: "int", nullable: false),
+                    ResourceTypeId = table.Column<int>(type: "int", nullable: false),
+                    ResourceType = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PickaxeResourceMultipliers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PickaxeResourceMultipliers_Pickaxes_PickaxeId",
+                        column: x => x.PickaxeId,
+                        principalTable: "Pickaxes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PickaxeShops",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PickaxeId = table.Column<int>(type: "int", nullable: false),
+                    ShopId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PickaxeShops", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PickaxeShops_Pickaxes_PickaxeId",
+                        column: x => x.PickaxeId,
+                        principalTable: "Pickaxes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PickaxeShops_Shops_ShopId",
+                        column: x => x.ShopId,
+                        principalTable: "Shops",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -177,50 +245,25 @@ namespace Projekt_Lab_11___12.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PickaxeResourceMultipliers",
+                name: "PickaxeShopResourceCosts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PickaxeId = table.Column<int>(type: "int", nullable: false),
+                    PickaxeShopId = table.Column<int>(type: "int", nullable: false),
                     ResourceTypeId = table.Column<int>(type: "int", nullable: false),
                     ResourceType = table.Column<int>(type: "int", nullable: false),
                     Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PickaxeResourceMultipliers", x => x.Id);
+                    table.PrimaryKey("PK_PickaxeShopResourceCosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PickaxeResourceMultipliers_Pickaxes_PickaxeId",
-                        column: x => x.PickaxeId,
-                        principalTable: "Pickaxes",
+                        name: "FK_PickaxeShopResourceCosts_PickaxeShops_PickaxeShopId",
+                        column: x => x.PickaxeShopId,
+                        principalTable: "PickaxeShops",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PickaxeShops",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PickaxeId = table.Column<int>(type: "int", nullable: false),
-                    ShopId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PickaxeShops", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PickaxeShops_Pickaxes_PickaxeId",
-                        column: x => x.PickaxeId,
-                        principalTable: "Pickaxes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PickaxeShops_Shops_ShopId",
-                        column: x => x.ShopId,
-                        principalTable: "Shops",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -332,28 +375,6 @@ namespace Projekt_Lab_11___12.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PickaxeShopResourceCosts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PickaxeShopId = table.Column<int>(type: "int", nullable: false),
-                    ResourceTypeId = table.Column<int>(type: "int", nullable: false),
-                    ResourceType = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PickaxeShopResourceCosts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PickaxeShopResourceCosts_PickaxeShops_PickaxeShopId",
-                        column: x => x.PickaxeShopId,
-                        principalTable: "PickaxeShops",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -412,6 +433,11 @@ namespace Projekt_Lab_11___12.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Mines_BonusClicksId",
+                table: "Mines",
+                column: "BonusClicksId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PickaxeResourceMultipliers_PickaxeId",
@@ -489,6 +515,9 @@ namespace Projekt_Lab_11___12.Migrations
 
             migrationBuilder.DropTable(
                 name: "Pickaxes");
+
+            migrationBuilder.DropTable(
+                name: "BonusClicks");
         }
     }
 }

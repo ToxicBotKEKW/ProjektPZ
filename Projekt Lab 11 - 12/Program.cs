@@ -27,7 +27,7 @@ namespace Projekt_Lab_11___12
             .AddDefaultTokenProviders()
             .AddDefaultUI();
 
-
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IMineService, MineService>();
             builder.Services.AddScoped<IStoreService, StoreService>();
             builder.Services.AddScoped<IEquipmentService, EquipmentService>();
@@ -35,6 +35,7 @@ namespace Projekt_Lab_11___12
             builder.Services.AddScoped<IRankingService, RankingService>();
             builder.Services.AddScoped<IUserStatisticsService, UserStatisticsService>();
             builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddHostedService<MyTimedService>();
 
 
             builder.Services.AddControllersWithViews();

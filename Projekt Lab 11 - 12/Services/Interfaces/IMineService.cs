@@ -6,5 +6,6 @@ namespace Projekt_Lab_11___12.Services.Interfaces
     {
         public Task<MineViewModel> MineViewModel();
 		public Task<string> PointsForClick(ResourceType resourceType);
+		public Task<string> BonusPointsForClick(ResourceType resourceType);
     }
 }

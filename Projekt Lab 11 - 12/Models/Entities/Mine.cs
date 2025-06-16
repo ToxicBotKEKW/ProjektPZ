@@ -14,6 +14,8 @@ namespace Projekt_Lab_11___12.Models.Entities
         [Range(0.01, double.MaxValue, ErrorMessage = "Minimalne wartość to 0,01")]
         public double PermAdditionalValue { get; set; } = 0;
 
+        public BonusClicks BonusClicks { get; set; } = new();
+
         protected Mine() {
         }
     }

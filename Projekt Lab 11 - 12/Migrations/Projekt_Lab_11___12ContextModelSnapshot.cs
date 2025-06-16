@@ -170,6 +170,25 @@ namespace Projekt_Lab_11___12.Migrations
                     b.ToTable("UserPickaxes", (string)null);
                 });
 
+            modelBuilder.Entity("Projekt_Lab_11___12.Models.Entities.BonusClicks", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CurrentClicks")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxClicks")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BonusClicks");
+                });
+
             modelBuilder.Entity("Projekt_Lab_11___12.Models.Entities.LevelRequirement", b =>
                 {
                     b.Property<int>("Id")
@@ -206,6 +225,9 @@ namespace Projekt_Lab_11___12.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BonusClicksId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(13)
@@ -225,6 +247,8 @@ namespace Projekt_Lab_11___12.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BonusClicksId");
 
                     b.ToTable("Mines");
 
@@ -554,6 +578,17 @@ namespace Projekt_Lab_11___12.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Projekt_Lab_11___12.Models.Entities.Mine", b =>
+                {
+                    b.HasOne("Projekt_Lab_11___12.Models.Entities.BonusClicks", "BonusClicks")
+                        .WithMany()
+                        .HasForeignKey("BonusClicksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BonusClicks");
                 });
 
             modelBuilder.Entity("Projekt_Lab_11___12.Models.Entities.PickaxeResourceMultiplier", b =>

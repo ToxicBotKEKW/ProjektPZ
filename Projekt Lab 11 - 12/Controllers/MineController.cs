@@ -57,6 +57,24 @@ namespace Projekt_Lab_11___12.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BonusPointsForClick([FromBody] ResourceType resourceType)
+        {
+            var result = await _mineService.BonusPointsForClick(resourceType);
+
+            if (double.TryParse(result, out double points))
+            {
+                return Json(new { success = true, points = points });
+            }
+            else
+            {
+                return Json(new { success = false, message = result });
+            }
+
+        }
+
 
     }
 }

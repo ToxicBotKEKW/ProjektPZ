@@ -60,7 +60,16 @@
         </div>
 
         <div id="mine" style="position: relative;">
-            <img src="~/img/mine-2.jpg" style="width: 100%;" />
+            <img id="mineclick" src="~/img/mine-1.jpg" style="width: 100%;" />
+            <div id="minecart">
+                <div class="progress-bar">
+                   <div class="progress-fill"
+                         data-current="@Model.GoldMine.BonusClicks.CurrentClicks"
+                         data-max="@Model.GoldMine.BonusClicks.MaxClicks"
+                         style="width: @( (int)(((double)Model.GoldMine.BonusClicks.CurrentClicks / Model.GoldMine.BonusClicks.MaxClicks) * 100) )%;"></div>
+                </div>
+                <img id="minecartclick" src="~/img/minecart.png" />
+            </div>
         </div>
     </div>
 </div>
@@ -70,7 +79,7 @@
     <script>
         let goldCount = parseFloat(document.getElementById('gold-count').textContent);
 
-        document.getElementById("mine").addEventListener("click", async function (e) {
+        document.getElementById("mineclick").addEventListener("click", async function (e) {
             const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
 
             const response = await fetch("/Mine/PointsForClick", {
@@ -106,6 +115,54 @@
             }
 
             document.getElementById("mine").appendChild(indicator);
+
+            setTimeout(() => {
+                indicator.style.opacity = "0";
+                setTimeout(() => indicator.remove(), 1000);
+            }, 1500);
+        });
+
+        document.getElementById("minecartclick").addEventListener("click", async function (e) {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            const progressFill = document.querySelector('.progress-fill');
+
+            const response = await fetch("/Mine/BonusPointsForClick", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": token
+                },
+                body: JSON.stringify(1)
+            });
+
+            const result = await response.json();
+
+            const indicator = document.createElement("div");
+            indicator.style.position = "absolute";
+            indicator.style.left = `${e.offsetX}px`;
+            indicator.style.top = `${e.offsetY}px`;
+            indicator.style.fontSize = "20px";
+            indicator.style.fontWeight = "bold";
+            indicator.style.pointerEvents = "none";
+            indicator.style.opacity = "1";
+            indicator.style.transition = "opacity 1s ease-out";
+
+            if (result.success) {
+                progressFill.dataset.current -= 1;
+                const percent = Math.floor((progressFill.dataset.current / progressFill.dataset.max) * 100);
+                progressFill.style.width = percent + '%';
+
+                indicator.textContent = `+${result.points.toFixed(2)}`;
+                indicator.style.color = "gold";
+
+                goldCount += result.points;
+                document.getElementById('gold-count').textContent = goldCount.toFixed(2);
+            } else {
+                indicator.textContent = result.message;
+                indicator.style.color = "red";
+            }
+
+            document.getElementById("minecart").appendChild(indicator);
 
             setTimeout(() => {
                 indicator.style.opacity = "0";
