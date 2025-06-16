@@ -200,14 +200,14 @@ namespace Projekt_Lab_11___12.Services
             switch (mine.MineResourceType)
             {
                 case ResourceType.Iron:
-                    if(user.Emerald > 10)
+                    if(user.Emerald >= 10)
                     {
                         user.Emerald -= 10;
                         mine.PermAdditionalValue += 1;
                     }
                     break;
                 case ResourceType.Gold:
-                    if (user.Emerald > 20)
+                    if (user.Emerald >= 20)
                     {
                         user.Emerald -= 20;
 
@@ -215,7 +215,7 @@ namespace Projekt_Lab_11___12.Services
                     }
                     break;
                 case ResourceType.Diamond:
-                    if (user.Emerald > 40)
+                    if (user.Emerald >= 40)
                     {
                         user.Emerald -= 40;
                         mine.PermAdditionalValue += 1;
